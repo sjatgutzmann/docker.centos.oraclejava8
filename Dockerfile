@@ -7,7 +7,7 @@ MAINTAINER Sven Jörns <sj.at.gutzmann@gmail.com>
 # running commands to build your service
 # every RUN create a new image step. So, it's a good idea to merge all console commands with && together
 RUN yum -y update; yum clean all \
- && yum -y install sudo epel-release sed wget \
+ && yum -y install sudo epel-release sed wget which\
 # lanugae support
 # reinstall glib to get all lanuages
  && yum -y reinstall glibc-common
@@ -18,6 +18,7 @@ RUN yum -y update; yum clean all \
 ENV JAVA_MAJOR_VERSION=8
 ENV JAVA_MINOR_VERSION=111
 ENV JAVA_BUILD_VERSION=14
+ENV JAVA_HOME=/usr/java/jdk1.${JAVA_MAJOR_VERSION}.0_${JAVA_MINOR_VERSION}/
 
 # to download java from oracle, you need ti acceot the licence
 # doing this with a cookie
@@ -29,7 +30,7 @@ RUN wget --no-cookies --no-check-certificate --header \
 # remove downloaded rpm file to save spave in this image
  && rm -f jdk-${JAVA_MAJOR_VERSION}u${JAVA_MINOR_VERSION}-linux-x64.rpm \
 # just print out the version 
- && java --version
+ && java -version
 
 # this image will not provied a service, so normaly nothing to start
 # starting a bash to test something 
